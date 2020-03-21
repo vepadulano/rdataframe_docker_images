@@ -6,7 +6,7 @@ resource "docker_container" "worker" {
   count = 5
   name  = "${format("sample_worker-%d", count.index)}"
   image = "worker_image:latest"
-  command = ""
+  # command = ""
   start = "true"
 }
 
