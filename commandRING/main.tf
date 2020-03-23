@@ -3,7 +3,7 @@ provider "docker" {
 }
 
 resource "docker_container" "worker" {
-  count = 10
+  count = 100
   name  = "${format("sample_worker-%d", count.index)}"
   image = "worker_image:latest"
   # command = ""
