@@ -10,7 +10,7 @@ node() {
         }
         stage("Build base"){
             script{
-                docker.build("root_img", "--network='host' BaseROOTCompile")
+                docker.build("root_img", "--network='host' BaseROOTcompile")
                 docker.build("root_utils", "--network='host' ROOTutils")
             }
         }
