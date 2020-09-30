@@ -1,14 +1,19 @@
 FROM amazonlinux:2
 ENV roothome=/cern_root/root
-RUN yum install -y git-core && git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src 
-RUN yum install -y tar python libXft gcc-c++ gcc binutils \
+RUN yum install -y git-core tar python3 gcc-c++ gcc binutils \
     gcc-gfortran openssl-devel pcre-devel \
-    mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel \
+    glew-devel ftgl-devel \
     fftw-devel cfitsio-devel python-devel
-RUN curl -SL https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz \
-        | tar -xzC . \
-        && mv cmake-3.18.3-Linux-x86_64 cmake-3.18.3 \
-        && cp /cmake-3.18.3/bin/cmake /usr/bin/ && rm -rf /cmake-3.18.3 \
+
+RUN version=3.18 && \
+    build=1 && \
+    cd /tmp && \
+    wget https://cmake.org/files/v$version/cmake-$version.$build-Linux-x86_64.sh && \
+    sudo mkdir /opt/cmake && \
+    sudo sh cmake-$version.$build-Linux-x86_64.sh --prefix=/opt/cmake && \
+    cmake --version
+
+RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src \
     && mkdir /cern_root && cd /cern_root \
     && cmake \
     -Dasimage=OFF \
