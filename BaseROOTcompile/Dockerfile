@@ -13,6 +13,7 @@ RUN  mkdir /opt/cmake && cd /tmp && \
     cmake --version
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src \
+    && export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     && mkdir /cern_root && cd /cern_root \
     && cmake \
     -Dasimage=OFF \
