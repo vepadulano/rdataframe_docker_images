@@ -8,9 +8,9 @@ RUN yum install -y git-core tar python3 gcc-c++ gcc binutils \
 RUN version=3.18 && \
     build=1 && \
     cd /tmp && \
-    curl https://cmake.org/files/v$version/cmake-$version.$build-Linux-x86_64.sh && \
+    curl https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.sh && \
     mkdir /opt/cmake && \
-    sh cmake-$version.$build-Linux-x86_64.sh --prefix=/opt/cmake && \
+    sh cmake-3.18.3-Linux-x86_64.sh --prefix=/opt/cmake > /dev/null && \
     ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     cmake --version
 
