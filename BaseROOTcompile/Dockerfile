@@ -11,6 +11,7 @@ RUN version=3.18 && \
     wget https://cmake.org/files/v$version/cmake-$version.$build-Linux-x86_64.sh && \
     sudo mkdir /opt/cmake && \
     sudo sh cmake-$version.$build-Linux-x86_64.sh --prefix=/opt/cmake && \
+    sudo ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     cmake --version
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src \
