@@ -15,6 +15,7 @@ RUN  mkdir /opt/cmake && cd /tmp && \
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src 
 RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     && mkdir /cern_root && cd /cern_root \
+    && yum install make \
     && cmake \
     -Dasimage=OFF \
     -Dbuiltin_clang=OFF \
@@ -57,6 +58,7 @@ RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     -Dlibcxx=ON \
     -DCMAKE_C_COMPILER=gcc \
     -DCMAKE_CXX_COMPILER=g++ \
+    -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_INSTALL_PREFIX=/cern_root /root_src \
     && cmake --build . -- install -j4 \
     && for dir in tutorials README cmake js icons LICENSE man geom fonts emacs interpreter; do \
