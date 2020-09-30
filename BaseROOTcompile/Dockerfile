@@ -8,7 +8,7 @@ RUN yum install -y tar python libXft gcc-c++ gcc binutils \
 RUN curl -SL https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz \
         | tar -xzC . \
         && mv cmake-3.18.3-Linux-x86_64 cmake-3.18.3 \
-        && cp -r /cmake-3.18.3/ /usr/local/ && rm -rf /cmake-3.18.3 \
+        && cp /cmake-3.18.3/bin/cmake /usr/local/ && rm -rf /cmake-3.18.3 \
     && mkdir /cern_root && cd /cern_root \
     && cmake \
     -Dasimage=OFF \
