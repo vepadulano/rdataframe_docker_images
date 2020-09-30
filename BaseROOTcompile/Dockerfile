@@ -5,16 +5,10 @@ RUN yum install -y python libXft gcc-c++ gcc binutils \
     gcc-gfortran openssl-devel pcre-devel \
     mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel \
     fftw-devel cfitsio-devel python-devel 
-RUN curl -SL https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.13.4-Linux-x86_64.tar.gz \
+RUN curl -SL https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz \
         | tar -xzC . \
-        && mv cmake-3.13.4-Linux-x86_64 cmake-3.13.4 \
-        && rsync -rv --links /cmake-3.13.4/ /usr/local/ && rm -rf /cmake-3.13.4 \
-
-    && curl -SL http://releases.llvm.org/7.0.1/clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04.tar.xz \
-        | tar -xJC . \
-        && mv clang+llvm-7.0.1-x86_64-linux-gnu-ubuntu-18.04 clang_7.0.1 \
-        && rsync -rv --links /clang_7.0.1/ /usr/local/ && rm -rf /clang_7.0.1 \
-
+        && mv cmake-3.18.3-Linux-x86_64 cmake-3.18.3 \
+        && rsync -rv --links /cmake-3.18.3/ /usr/local/ && rm -rf /cmake-3.18.3 \
     && mkdir /cern_root && cd /cern_root \
     && cmake \
     -Dasimage=OFF \
@@ -55,6 +49,9 @@ RUN curl -SL https://github.com/Kitware/CMake/releases/download/v3.13.4/cmake-3.
     -Dx11=OFF \
     -Dxml=OFF \
     -Dxrootd=OFF \
+    -Dlibcxx=ON \
+    -DCMAKE_C_COMPILER=gcc\
+    -DCMAKE_CXX_COMPILER=g++\
     -DCMAKE_INSTALL_PREFIX=/cern_root /root_src \
     && cmake --build . -- install -j4 \
     && for dir in tutorials README cmake js icons LICENSE man geom fonts emacs interpreter; do \
