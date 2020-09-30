@@ -2,9 +2,9 @@ FROM amazonlinux:2
 ENV roothome=/cern_root/root
 RUN curl -L https://root.cern/download/root_v6.22.02.Linux-centos7-x86_64-gcc4.8.tar.gz -o rootbin.tar.gz \
     && yum install -y tar gzip libXft-devel make cmake gcc-c++ gcc \
-    binutils libXft-devel python3 python3-devel \
+    binutils libXft-devel libXpm-devel libXext-devel python3 python3-devel \
     && mkdir /cern_root \
-    && tar xvf rootbin.tar.gz -C /cern_root
+    && tar xvf rootbin.tar.gz -C /cern_root > /dev/null 
 # RUN yum install -y git cmake gcc-c++ gcc binutils \
 #     libX11-devel libXpm-devel \
 #     gcc-gfortran gsl-static
