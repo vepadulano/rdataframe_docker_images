@@ -1,7 +1,7 @@
 FROM amazonlinux:2
 ENV roothome=/cern_root/root
 RUN yum install -y git && git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src 
-RUN yum install -y python libXft gcc-c++ gcc binutils \
+RUN yum install -y tar python libXft gcc-c++ gcc binutils \
     gcc-gfortran openssl-devel pcre-devel \
     mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel \
     fftw-devel cfitsio-devel python-devel 
