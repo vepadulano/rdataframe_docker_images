@@ -2,7 +2,7 @@ FROM amazonlinux:2
 ENV roothome=/cern_root/root
 RUN yum install -y git-core tar python3 gcc-c++ gcc binutils \
     gcc-gfortran ftgl-devel make \
-    fftw-devel cfitsio-devel python3-devel
+    fftw-devel libcxx python3-devel
 
 RUN  mkdir /opt/cmake && cd /tmp && \
     curl -L https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz -o /opt/cmake/cmake.tar.gz && \
@@ -13,8 +13,6 @@ RUN  mkdir /opt/cmake && cd /tmp && \
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src 
 RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
-    && export CC=/usr/local/bin/gcc \
-    && export CXX=/usr/local/bin/g++ \
     && mkdir /cern_root && cd /cern_root \
     && cmake \
     -Dasimage=OFF \
@@ -57,8 +55,9 @@ RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     -Dxrootd=OFF \
     -Dlibcxx=ON \
     -Dcxx11=ON \
-    -DCMAKE_C_COMPILER=gcc \
-    -DCMAKE_CXX_COMPILER=g++ \
+    -DCMAKE_C_COMPILER=/usr/bin/gcc \
+    -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
+    -DCMAKE_Fortran_COMPILER=/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_INSTALL_PREFIX=/cern_root /root_src \
     && cmake --build . -- install -j4 \
