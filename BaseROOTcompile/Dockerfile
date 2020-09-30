@@ -5,12 +5,10 @@ RUN yum install -y git-core tar python3 gcc-c++ gcc binutils \
     glew-devel ftgl-devel \
     fftw-devel cfitsio-devel python-devel
 
-RUN version=3.18 && \
-    build=1 && \
-    cd /tmp && \
-    curl -L https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.sh -o cmake.sh && \
-    mkdir /opt/cmake && \
-    sh cmake.sh --prefix=/opt/cmake > /dev/null && \
+RUN  mkdir /opt/cmake && cd /tmp && \
+    curl -L cmake-3.18.3-Linux-x86_64.tar.gz -o /opt/cmake/cmake.tar.gz && \
+    cd /opt/cmake && \
+    tar xf cmake.tar.gz && export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     cmake --version
 
