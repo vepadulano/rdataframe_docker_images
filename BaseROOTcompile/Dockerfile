@@ -4,11 +4,11 @@ RUN yum install -y git && git clone --branch v6-22-00-patches https://github.com
 RUN yum install -y tar python libXft gcc-c++ gcc binutils \
     gcc-gfortran openssl-devel pcre-devel \
     mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel \
-    fftw-devel cfitsio-devel python-devel rsync
+    fftw-devel cfitsio-devel python-devel
 RUN curl -SL https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz \
         | tar -xzC . \
         && mv cmake-3.18.3-Linux-x86_64 cmake-3.18.3 \
-        && rsync -rv --links /cmake-3.18.3/ /usr/local/ && rm -rf /cmake-3.18.3 \
+        && cp -r /cmake-3.18.3/ /usr/local/ && rm -rf /cmake-3.18.3 \
     && mkdir /cern_root && cd /cern_root \
     && cmake \
     -Dasimage=OFF \
