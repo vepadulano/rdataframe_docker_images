@@ -1,7 +1,7 @@
 FROM root_utils:latest
 
 #DOWNLOAD PYRDF AND DEPENDENCIES
-RUN yum install -y epel-release && yum install -y python-pip pandoc
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum install -y python-pip pandoc
 
 RUN git clone https://github.com/JavierCVilla/PyRDF ${roothome}/PyRDF
 RUN pip install --upgrade pip && \
