@@ -10,7 +10,9 @@ RUN pip install --upgrade pip && \
     pip install pyspark --no-cache-dir
     
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
-RUN root  ${roothome}/PyRDF/introduction.py
+RUN export PATH=/mnt/root/chroot/usr/local/sbin:/mnt/root/chroot/usr/local/bin:/mnt/root/chroot/usr/sbin:/mnt/root/chroot/usr/bin:/mnt/root/chroot/sbin:/mnt/root/chroot/bin:$PATH \
+ && . ${roothome}/bin/thisroot.sh \
+ && root ${roothome}/PyRDF/introduction.py
 
 #INSTALL TERRAFORM
 RUN curl -L https://releases.hashicorp.com/terraform/0.12.23/terraform_0.12.23_linux_amd64.zip > terraform.zip
