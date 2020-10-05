@@ -1,8 +1,8 @@
 FROM root_utils:latest
 
 #DOWNLOAD PYRDF AND DEPENDENCIES
+ENV PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_root/chroot/usr/sbin:/cern_root/chroot/usr/bin:/cern_root/chroot/sbin:/cern_root/chroot/bin:$PATH
 RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum install -y python-pip pandoc git-core
-
 RUN git clone https://github.com/JavierCVilla/PyRDF ${roothome}/PyRDF
 RUN pip install --upgrade pip && \
     pip install wheel && \
@@ -10,8 +10,7 @@ RUN pip install --upgrade pip && \
     pip install pyspark --no-cache-dir
     
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
-RUN export PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_root/chroot/usr/sbin:/cern_root/chroot/usr/bin:/cern_root/chroot/sbin:/cern_root/chroot/bin:$PATH \
- && . ${roothome}/bin/thisroot.sh \
+RUN . ${roothome}/bin/thisroot.sh \
  && root ${roothome}/PyRDF/introduction.py
 
 #INSTALL TERRAFORM
