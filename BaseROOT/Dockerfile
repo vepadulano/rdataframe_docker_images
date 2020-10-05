@@ -1,7 +1,6 @@
 FROM amazonlinux:2
 ENV roothome=/cern_root/root
-RUN ls -laR /etc/yum/vars
-RUN ls -laR /etc/dnf/vars
+RUN find /etc/yum/vars -type f -print -exec cat {} \;
 RUN curl -L https://root.cern/download/root_v6.22.02.Linux-centos7-x86_64-gcc4.8.tar.gz -o rootbin.tar.gz \
     && mkdir -p /cern_root/chroot \
     && yum install -y tar gzip libXft-devel make cmake gcc-c++ gcc \
