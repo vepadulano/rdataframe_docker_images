@@ -1,7 +1,7 @@
 FROM amazonlinux:2
 ENV roothome=/cern_root/root
 RUN yum install -y git-core tar python3 gcc-c++ gcc binutils \
-    gcc-gfortran ftgl-devel make \
+    gcc-gfortran make \
     fftw-devel libcxx python3-devel
 
 RUN  mkdir /opt/cmake && cd /tmp && \
