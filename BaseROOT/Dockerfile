@@ -1,5 +1,6 @@
 FROM amazonlinux:2
 ENV roothome=/cern_root/root
+RUN python -c 'import yum, json; yb = yum.YumBase(); print json.dumps(yb.conf.yumvar, indent=2)'
 RUN find /etc/yum/vars -type f -print -exec cat {} \;
 RUN curl -L https://root.cern/download/root_v6.22.02.Linux-centos7-x86_64-gcc4.8.tar.gz -o rootbin.tar.gz \
     && mkdir -p /cern_root/chroot/etc/ && ln -s /etc/yum /cern_root/chroot/etc/yum \
