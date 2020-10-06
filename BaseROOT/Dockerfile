@@ -19,7 +19,7 @@ RUN for dir in tutorials README cmake js icons LICENSE man geom fonts emacs; do 
     done \
     && ls -la $roothome \
     && ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5 \
-    && ln -s /cern_root/chroot/usr/lib64/libssl.so.1.0.2k  /cern_root/chroot/usr/lib64/libssl.so.1.1 \
-    && ln -s /cern_root/chroot/usr/lib64/libcrypto.so.1.0.2k  /cern_root/chroot/usr/lib64/libcrypto.so.1.1
+    && ln -s /cern_root/chroot/usr/lib64/libssl.so.1.0.2k  /cern_root/chroot/usr/lib64/libssl.so.1.1
+    # && ln -s /cern_root/chroot/usr/lib64/libcrypto.so.1.0.2k  /cern_root/chroot/usr/lib64/libcrypto.so.1.1
 
 CMD . ${roothome}/bin/thisroot.sh && root
