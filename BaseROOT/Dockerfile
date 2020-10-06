@@ -12,9 +12,14 @@ RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum 
     && export PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_root/chroot/usr/sbin:/cern_root/chroot/usr/bin:/cern_root/chroot/sbin:/cern_root/chroot/bin:$PATH \
     && tar xvf rootbin.tar.gz -C /cern_root > /dev/null
 
+RUN yum install -y openssl-libs --installroot=/cern_root/chroot --releasever=/
+
 RUN for dir in tutorials README cmake js icons LICENSE man geom fonts emacs; do \
         rm -rf ${roothome}/${dir}; \
     done \
-    && ls -la $roothome && ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5
+    && ls -la $roothome \
+    && ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5 \
+    && ln -s /cern_root/chroot/usr/lib64/libssl.so.1.0.2k  /cern_root/chroot/usr/lib64/libssl.so.1.1 \
+    && ln -s /cern_root/chroot/usr/lib64/libcrypto.so.1.0.2k  /cern_root/chroot/usr/lib64/libcrypto.so.1.1
 
 CMD . ${roothome}/bin/thisroot.sh && root
