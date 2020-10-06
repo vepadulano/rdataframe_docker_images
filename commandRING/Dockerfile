@@ -10,7 +10,7 @@ RUN pip install --upgrade pip && \
     
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
 RUN . ${roothome}/bin/thisroot.sh \
- && root ${roothome}/PyRDF/introduction.py
+ && root -b ${roothome}/PyRDF/introduction.py
 
 #INSTALL TERRAFORM
 RUN curl -L https://releases.hashicorp.com/terraform/0.12.23/terraform_0.12.23_linux_amd64.zip > terraform.zip

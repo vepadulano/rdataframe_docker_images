@@ -39,7 +39,7 @@ node() {
                     }
                     stage("Run worker") {
                         worker_docker.inside{
-                            sh '. /cern_root/root/bin/thisroot.sh && root -v'
+                            sh '. /cern_root/root/bin/thisroot.sh && root -bv'
                         }
                     }
                 }
