@@ -12,7 +12,7 @@ RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum 
     && export PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_root/chroot/usr/sbin:/cern_root/chroot/usr/bin:/cern_root/chroot/sbin:/cern_root/chroot/bin:$PATH \
     && tar xvf rootbin.tar.gz -C /cern_root > /dev/null
 
-RUN yum install -y openssl-libs --installroot=/cern_root/chroot --releasever=/
+RUN yum install -y openssl11 --installroot=/cern_root/chroot --releasever=/
 
 RUN for dir in tutorials README cmake js icons LICENSE man geom fonts emacs; do \
         rm -rf ${roothome}/${dir}; \
