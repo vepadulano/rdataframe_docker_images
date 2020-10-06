@@ -14,6 +14,6 @@ RUN curl -L https://root.cern/download/root_v6.22.02.Linux-centos7-x86_64-gcc4.8
 RUN for dir in tutorials README cmake js icons LICENSE man geom fonts emacs; do \
         rm -rf ${roothome}/${dir}; \
     done \
-    && ls -la $roothome
+    && ls -la $roothome && ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5
 
 CMD . ${roothome}/bin/thisroot.sh && root
