@@ -4,10 +4,10 @@ ENV PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_
 ENV LD_LIBRARY_PATH=/cern_root/chroot/usr/lib64:/cern_root/chroot/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
 RUN python -c 'import yum, json; yb = yum.YumBase(); print json.dumps(yb.conf.yumvar, indent=2)'
 RUN find /etc/yum/vars -type f -print -exec cat {} \;
-RUN curl -L https://root.cern/download/root_v6.14.06.Linux-fedora27-x86_64-gcc7.3.tar.gz -o rootbin.tar.gz \
-    && mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum \
+RUN curl -L https://root.cern/download/root_v6.14.06.Linux-fedora27-x86_64-gcc7.3.tar.gz -o rootbin.tar.gz
+RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum \
     && yum install -y tar gzip libXft-devel make cmake gcc-c++ gcc \
-    binutils libXft libXft-devel libXpm-devel libXext-devel python3 python3-devel libzstd ncurses-libs --installroot=/cern_root/chroot --releasever=/ \
+    binutils libXft libXft-devel libXpm-devel libXext-devel python3 python3-devel libzstd ncurses-libs tbb --installroot=/cern_root/chroot --releasever=/ \
     && export PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_root/chroot/usr/sbin:/cern_root/chroot/usr/bin:/cern_root/chroot/sbin:/cern_root/chroot/bin:$PATH \
     && tar xvf rootbin.tar.gz -C /cern_root > /dev/null
 
