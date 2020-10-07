@@ -17,6 +17,7 @@ RUN  mkdir /opt/cmake && cd /tmp && \
     tar xf cmake.tar.gz && export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" && \
     ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     cmake --version
+RUN  yum install -y git && mkdir /root_src
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src 
 RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
@@ -66,7 +67,7 @@ RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     # -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
     # -DCMAKE_Fortran_COMPILER=/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
-    -DCMAKE_INSTALL_PREFIX=/cern_root /root_src \
+    -DCMAKE_INSTALL_PREFIX=/cern_root/root /root_src \
     && cmake --build . -- install -j4 \
     && for dir in tutorials README cmake js icons LICENSE man geom fonts emacs interpreter; do \
         rm -rf ${roothome}/${dir}; \
