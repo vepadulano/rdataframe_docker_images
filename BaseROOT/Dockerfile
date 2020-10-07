@@ -1,4 +1,4 @@
-FROM amazonlinux:2018.03.0.20200602.1
+FROM amazonlinux:2
 ENV roothome=/cern_root/root
 ENV PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_root/chroot/usr/sbin:/cern_root/chroot/usr/bin:/cern_root/chroot/sbin:/cern_root/chroot/bin:$PATH
 ENV LD_LIBRARY_PATH=/cern_root/chroot/usr/lib64:/cern_root/chroot/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
@@ -9,7 +9,6 @@ RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum 
     && yum install -y tar gzip libXft-devel make cmake gcc-c++ gcc \
     binutils libXft libXft-devel libXpm-devel libXext-devel python3 python3-devel libzstd ncurses-libs tbb tbb-devel \
     openssl11 --installroot=/cern_root/chroot --releasever=/ \
-    && export PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_root/chroot/usr/sbin:/cern_root/chroot/usr/bin:/cern_root/chroot/sbin:/cern_root/chroot/bin:$PATH \
     && tar xvf rootbin.tar.gz -C /cern_root > /dev/null
 
 RUN for dir in tutorials README cmake js icons LICENSE man geom fonts emacs; do \
