@@ -9,11 +9,7 @@ RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum 
     binutils libXft libXft-devel libXpm-devel libXext-devel python3 python3-devel libzstd ncurses-libs tbb tbb-devel \
     openssl11 git-core --installroot=/cern_root/chroot --releasever=/
 
-RUN for dir in tutorials README cmake js icons LICENSE man geom fonts emacs; do \
-        rm -rf ${roothome}/${dir}; \
-    done \
-    && ls -la $roothome \
-    && ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5 
+RUN ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5 
 
 RUN  mkdir /opt/cmake && cd /tmp && \
     curl -L https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz -o /opt/cmake/cmake.tar.gz && \
