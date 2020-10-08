@@ -68,7 +68,7 @@ RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     # -DCMAKE_Fortran_COMPILER=/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_INSTALL_PREFIX=/cern_root/root /root_src \
-    && cmake --build . -- install -j4 \
+    && cmake --build . -- install -j1 \
     && for dir in tutorials README cmake js icons LICENSE man geom fonts emacs interpreter; do \
         rm -rf ${roothome}/${dir}; \
     done 
