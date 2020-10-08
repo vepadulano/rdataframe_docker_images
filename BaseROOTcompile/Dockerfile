@@ -24,8 +24,8 @@ RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     && mkdir -p /cern_root/root && cd /cern_root/root \
     && cmake \
     -Dasimage=OFF \
-    -Dbuiltin_clang=OFF \
-    -Dbuiltin_llvm=OFF \
+    # -Dbuiltin_clang=OFF \
+    # -Dbuiltin_llvm=OFF \
     -Dclad=OFF \
     -Dcudnn=OFF \
     -Ddataframe=OFF \
