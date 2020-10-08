@@ -17,7 +17,7 @@ RUN  mkdir /opt/cmake && cd /tmp && \
     tar xf cmake.tar.gz && export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" && \
     ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     cmake --version
-RUN  yum install -y git && mkdir /root_src
+RUN  yum install -y git && yum -y groupinstall 'Development Tools' && mkdir /root_src
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src 
 RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
