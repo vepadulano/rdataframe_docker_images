@@ -19,5 +19,6 @@ RUN chmod +x /usr/bin/terraform
 RUN mkdir /terraform
 ADD main.tf /terraform/main.tf
 RUN chmod 777 /terraform -R
+RUN du -h --max-depth=2 /
 
 CMD cd /terraform && terraform init &&  terraform apply -auto-approve
