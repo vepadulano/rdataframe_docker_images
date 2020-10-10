@@ -9,6 +9,8 @@ RUN pip install --upgrade pip && \
     pip install -r ${roothome}/PyRDF/requirements.txt && \
     pip install pyspark --no-cache-dir
     
+ENV roothome=/cern_root/root_install
+RUN rm -rf /root_src && rm -rf /cern_root/root
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
 
@@ -19,6 +21,5 @@ RUN chmod +x /usr/bin/terraform
 RUN mkdir /terraform
 ADD main.tf /terraform/main.tf
 RUN chmod 777 /terraform -R
-RUN du -h --max-depth=2 /
 
 CMD cd /terraform && terraform init &&  terraform apply -auto-approve
