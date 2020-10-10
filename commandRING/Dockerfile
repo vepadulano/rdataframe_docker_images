@@ -3,7 +3,8 @@ FROM root_utils:latest
 #DOWNLOAD PYRDF AND DEPENDENCIES
 ENV roothome=/cern_root/root_install
 RUN  cp -r /etc/yum /cern_root/chroot/etc/yum \
-    && yum install -y epel-release \
+    && curl -L https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -o epel.rpm \
+    && rpm -ivh ./epel.rpm \
     # && yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --installroot=/cern_root/chroot --releasever=/ \
     && yum install -y python-pip pandoc git-core --installroot=/cern_root/chroot --releasever=/
 RUN git clone https://github.com/JavierCVilla/PyRDF ${roothome}/PyRDF
