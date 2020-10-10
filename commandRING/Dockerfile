@@ -1,15 +1,16 @@
 FROM root_utils:latest
 
 #DOWNLOAD PYRDF AND DEPENDENCIES
-RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum install -y python-pip pandoc git-core
+ENV roothome=/cern_root/root_install
+RUN  cp -r /etc/yum /cern_root/chroot/etc/yum \
+    && yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --installroot=/cern_root/chroot --releasever=/ \
+    && yum install -y python-pip pandoc git-core --installroot=/cern_root/chroot --releasever=/
 RUN git clone https://github.com/JavierCVilla/PyRDF ${roothome}/PyRDF
 RUN pip install --upgrade pip && \
     pip install wheel && \
     pip install -r ${roothome}/PyRDF/requirements.txt && \
     pip install pyspark --no-cache-dir
     
-ENV roothome=/cern_root/root_install
 RUN rm -rf /root_src && rm -rf /cern_root/root
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
