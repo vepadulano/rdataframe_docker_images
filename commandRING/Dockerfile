@@ -10,7 +10,7 @@ RUN  cp -r /etc/yum /cern_root/chroot/etc/yum \
 RUN git clone https://github.com/JavierCVilla/PyRDF ${roothome}/PyRDF
 # RUN pip install --upgrade pip && \
 #     pip install wheel && \
-RUN    pip3 install -r ${roothome}/PyRDF/requirements.txt  
+RUN    python3 -m pip install -r ${roothome}/PyRDF/requirements.txt  
     # pip install pyspark --no-cache-dir
     
 RUN rm -rf /root_src && rm -rf /cern_root/root
