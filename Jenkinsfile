@@ -27,9 +27,11 @@ node() {
                         {
                             // sh '. /cern_root/root/bin/thisroot.sh && python2 /cern_root/root/PyRDF/introduction.py'
                             // sh 'cd /terraform && terraform init &&  terraform apply -auto-approve && terraform destroy -auto-approve'
-                            sh 'mkdir -p /mnt/AWS_ROOT 
-                                && cd /mnt/AWS_ROOT
-                                && zip aws_root.zip /cern_root/chroot /cern_root/root'
+                            sh """
+                            mkdir -p /mnt/AWS_ROOT
+                            cd /mnt/AWS_ROOT 
+                            zip aws_root.zip /cern_root/chroot /cern_root/root
+                            """
                         }
                     }
                 },
