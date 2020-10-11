@@ -11,7 +11,6 @@ node() {
         stage("Build base"){
             script{
                 docker.build("root_utils", "--network='host' BaseROOTcompile")
-                // docker.build("root_utils", "--network='host' ROOTutils")
             }
         }
 
@@ -24,10 +23,13 @@ node() {
                         }
                     }
                     stage("Run image") {
-                        pyrdf_docker.inside("--network='host' -v /var/run/docker.sock:/var/run/docker.sock")
+                        pyrdf_docker.inside("--network='host' -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/dav:/mnt")
                         {
                             // sh '. /cern_root/root/bin/thisroot.sh && python2 /cern_root/root/PyRDF/introduction.py'
-                            sh 'cd /terraform && terraform init &&  terraform apply -auto-approve && terraform destroy -auto-approve'
+                            // sh 'cd /terraform && terraform init &&  terraform apply -auto-approve && terraform destroy -auto-approve'
+                            sh 'mkdir -p /mnt/AWS_ROOT 
+                                && cd /mnt/AWS_ROOT
+                                && zip aws_root.zip /cern_root/chroot /cern_root/root'
                         }
                     }
                 },
