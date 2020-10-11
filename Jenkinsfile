@@ -30,7 +30,7 @@ node() {
                             sh """
                             mkdir -p /mnt/AWS_ROOT
                             cd /mnt/AWS_ROOT 
-                            zip -r aws_root.zip /cern_root/chroot /cern_root/root_install
+                            zip -r -y aws_root.zip /cern_root/chroot /cern_root/root_install
                             """
                         }
                     }
