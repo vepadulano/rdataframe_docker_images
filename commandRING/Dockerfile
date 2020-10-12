@@ -5,7 +5,7 @@ ENV roothome=/cern_root/root_install
 RUN git clone https://github.com/JavierCVilla/PyRDF ${roothome}/PyRDF
 RUN python3 -m pip install -r ${roothome}/PyRDF/requirements.txt  
     
-RUN rm -rf /root_src && rm -rf /cern_root/root
+RUN rm -rf /root_src && rm -rf /cern_root/root && rm -rf /cern_root/chroot/var/cache
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
 
