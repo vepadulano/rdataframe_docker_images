@@ -5,13 +5,12 @@ ENV LD_LIBRARY_PATH=/cern_root/chroot/usr/lib64:/cern_root/chroot/usr/lib:/usr/l
 # RUN python -c 'import yum, json; yb = yum.YumBase(); print json.dumps(yb.conf.yumvar, indent=2)'
 # RUN find /etc/yum/vars -type f -print -exec cat {} \;
 RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum \
-    && yum install -y tar gzip make gcc-c++ gcc \
-    binutils \
-    # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  \
-    python3 python3-devel libzstd \
-    openssl11 git-core --installroot=/cern_root/chroot --releasever=/
+    && yum install -y make gcc-c++ gcc binutils \
+    # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  python3-devel  \
+    python3 openssl11 --installroot=/cern_root/chroot --releasever=/
 
 RUN ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5 
+RUN  yum install -y git tar gzip && yum -y groupinstall 'Development Tools' && mkdir /root_src
 
 RUN  mkdir /opt/cmake && cd /tmp && \
     curl -L https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz -o /opt/cmake/cmake.tar.gz && \
@@ -19,7 +18,6 @@ RUN  mkdir /opt/cmake && cd /tmp && \
     tar xf cmake.tar.gz && export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" && \
     ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     cmake --version
-RUN  yum install -y git && yum -y groupinstall 'Development Tools' && mkdir /root_src
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git /root_src 
 RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
