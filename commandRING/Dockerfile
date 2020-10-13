@@ -4,8 +4,12 @@ FROM root_utils:latest
 ENV roothome=/cern_root/root_install
 RUN git clone https://github.com/JavierCVilla/PyRDF ${roothome}/PyRDF
 RUN python3 -m pip install -r ${roothome}/PyRDF/requirements.txt  
-    
-RUN rm -rf /root_src && rm -rf /cern_root/root && rm -rf /cern_root/chroot/var/cache
+RUN echo "clean_requirements_on_remove=1" >> /cern_root/chroot/etc/yum.conf && \
+    yum remove -y tar gzip libXft-devel \
+    libXft libXft-devel libXpm-devel libXext-devel libzstd ncurses-libs tbb tbb-devel \
+    git --installroot=/cern_root/chroot --releasever=/
+
+RUN rm -rf /root_src && rm -rf /cern_root/root && rm -rf /cern_root/chroot/var/cache && rm -rf /cern_root/chroot/var/lib/yum
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
 
