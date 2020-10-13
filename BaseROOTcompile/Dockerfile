@@ -7,7 +7,7 @@ ENV LD_LIBRARY_PATH=/cern_root/chroot/usr/lib64:/cern_root/chroot/usr/lib:/usr/l
 RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum \
     && yum install -y make gcc-c++ gcc binutils \
     # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  python3-devel  \
-    python3 openssl11 --installroot=/cern_root/chroot --releasever=/
+    python3 python3-devel openssl11 --installroot=/cern_root/chroot --releasever=/
 
 RUN ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5 
 RUN  yum install -y git tar gzip && yum -y groupinstall 'Development Tools' && mkdir /root_src
