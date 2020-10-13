@@ -5,8 +5,10 @@ ENV LD_LIBRARY_PATH=/cern_root/chroot/usr/lib64:/cern_root/chroot/usr/lib:/usr/l
 # RUN python -c 'import yum, json; yb = yum.YumBase(); print json.dumps(yb.conf.yumvar, indent=2)'
 # RUN find /etc/yum/vars -type f -print -exec cat {} \;
 RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum \
-    && yum install -y tar gzip libXft-devel make cmake gcc-c++ gcc \
-    binutils libXft libXft-devel libXpm-devel libXext-devel python3 python3-devel libzstd ncurses-libs tbb tbb-devel \
+    && yum install -y tar gzip make gcc-c++ gcc \
+    binutils \
+    # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  \
+    python3 python3-devel libzstd \
     openssl11 git-core --installroot=/cern_root/chroot --releasever=/
 
 RUN ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5 
@@ -23,9 +25,9 @@ RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git
 RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     && mkdir -p /cern_root/root_install && mkdir -p /cern_root/root && cd /cern_root/root \
     && cmake \
+    -Dbuiltin_tbb=ON \
+    -Dminimal=ON \
     -Dasimage=OFF \
-    # -Dbuiltin_clang=OFF \
-    # -Dbuiltin_llvm=OFF \
     -Dclad=OFF \
     -Dcudnn=OFF \
     -Ddataframe=ON \
@@ -59,13 +61,16 @@ RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     -Dvdt=OFF \
     -Dwebgui=OFF \
     -Dx11=OFF \
+    -Dxft=OFF \
+    -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
     -Dxrootd=OFF \
     # -DCMAKE_C_COMPILER=/usr/bin/gcc \
     # -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
     # -DCMAKE_Fortran_COMPILER=/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
-    -DCMAKE_INSTALL_PREFIX=/cern_root/root_install /root_src \
+    -DCMAKE_INSTALL_PREFIX=/cern_root/root_install \
+    -DCMAKE_BUILD_TYPE=Release /root_src \
     && cmake --build . -- install -j1 \
     && for dir in tutorials README cmake js icons LICENSE man geom fonts emacs interpreter; do \
         rm -rf ${roothome}/${dir}; \
