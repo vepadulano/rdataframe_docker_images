@@ -23,14 +23,14 @@ node() {
                         }
                     }
                     stage("Run image") {
-                        pyrdf_docker.inside("--network='host' -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/dav:/mnt")
+                        pyrdf_docker.inside("--network='host' -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/dav:/mnt/dav")
                         {
                             // sh '. /cern_root/root/bin/thisroot.sh && python2 /cern_root/root/PyRDF/introduction.py'
                             // sh 'cd /terraform && terraform init &&  terraform apply -auto-approve && terraform destroy -auto-approve'
                             sh """
-                            mkdir -p /mnt/AWS_ROOT
+                            mkdir -p /mnt/dav/AWS_ROOT
                             cd /mnt/cern_root
-                            zip -r /mnt/AWS_ROOT/aws_root.zip chroot root_install
+                            zip -r /mnt/dav/AWS_ROOT/aws_root.zip chroot root_install
                             """
                         }
                     }
