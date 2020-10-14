@@ -5,14 +5,13 @@ ENV PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${C
 ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
 # RUN python -c 'import yum, json; yb = yum.YumBase(); print json.dumps(yb.conf.yumvar, indent=2)'
 # RUN find /etc/yum/vars -type f -print -exec cat {} \;
-RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum &&\
+RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum && \
     yum install -y make gcc-c++ gcc binutils \
-    python3 python3-devel openssl11 --installroot=${CHROOT} --releasever=/ &&\
-    yum groupinstall -y 'Development Tools' --installroot=${CHROOT} --releasever=/
+    python3 python3-devel openssl11 --installroot=${CHROOT} --releasever=/ && \
+    ln -s ${CHROOT}/usr/lib64/libtinfo.so.6 ${CHROOT}/usr/lib64/libtinfo.so.5 
     # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  python3-devel  \
 
-RUN ln -s ${CHROOT}/usr/lib64/libtinfo.so.6 ${CHROOT}/usr/lib64/libtinfo.so.5 
-RUN yum install -y git tar gzip && mkdir /root_src    
+RUN yum install -y git tar gzip && yum groupinstall -y 'Development Tools' && mkdir /root_src    
 ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH
 RUN mkdir /opt/cmake && cd /tmp && \
     curl -L https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz -o /opt/cmake/cmake.tar.gz && \
@@ -22,8 +21,7 @@ RUN mkdir /opt/cmake && cd /tmp && \
     cmake --version
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
-RUN  yum groupinstall -y 'Development Tools' && export PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH \
-    && mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
+RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
     && cmake \
     -Dbuiltin_tbb=ON \
     -Dminimal=ON \
@@ -73,7 +71,7 @@ RUN  yum groupinstall -y 'Development Tools' && export PATH=/opt/cmake/cmake-3.1
     -DCMAKE_BUILD_TYPE=Release /root_src \
     && cmake --build . -- install -j1 \
     && for dir in tutorials README cmake js icons LICENSE man geom fonts emacs interpreter; do \
-        rm -rf ${roothome}/${dir}; \
+        rm -rf /mnt/cern_root/root_install/${dir}; \
     done 
 
 CMD . ${roothome}/bin/thisroot.sh && root -b
