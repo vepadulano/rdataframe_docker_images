@@ -12,7 +12,7 @@ RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum &&\
     # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  python3-devel  \
 
 RUN ln -s ${CHROOT}/usr/lib64/libtinfo.so.6 ${CHROOT}/usr/lib64/libtinfo.so.5 
-RUN yum install -y git tar gzip && mkdir /root_src
+RUN yum install -y git tar gzip && mkdir /root_src    
 ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH
 RUN mkdir /opt/cmake && cd /tmp && \
     curl -L https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz -o /opt/cmake/cmake.tar.gz && \
