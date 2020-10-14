@@ -22,7 +22,7 @@ RUN mkdir /opt/cmake && cd /tmp && \
     cmake --version
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
-RUN export PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH \
+RUN  yum groupinstall -y 'Development Tools' && export PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH \
     && mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
     && cmake \
     -Dbuiltin_tbb=ON \
