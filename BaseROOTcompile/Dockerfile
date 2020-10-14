@@ -1,28 +1,29 @@
 FROM amazonlinux:2
 ENV roothome=/mnt/cern_root/root
-ENV PATH=/mnt/cern_root/chroot/usr/local/sbin:/mnt/cern_root/chroot/usr/local/bin:/mnt/cern_root/chroot/usr/sbin:/mnt/cern_root/chroot/usr/bin:/mnt/cern_root/chroot/sbin:/mnt/cern_root/chroot/bin:$PATH
-ENV LD_LIBRARY_PATH=/mnt/cern_root/chroot/usr/lib64:/mnt/cern_root/chroot/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
+ENV CHROOT=/mnt/cern_root/chroot
+ENV PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin:$PATH
+ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
 # RUN python -c 'import yum, json; yb = yum.YumBase(); print json.dumps(yb.conf.yumvar, indent=2)'
 # RUN find /etc/yum/vars -type f -print -exec cat {} \;
-RUN mkdir -p /mnt/cern_root/chroot/etc/ && cp -r /etc/yum /mnt/cern_root/chroot/etc/yum \
-    && yum install -y make gcc-c++ gcc binutils \
+RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum &&\
+    yum install -y make gcc-c++ gcc binutils \
+    python3 python3-devel openssl11 --installroot=${CHROOT} --releasever=/ &&\
+    yum groupinstall -y 'Development Tools' --installroot=${CHROOT} --releasever=/
     # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  python3-devel  \
-    python3 python3-devel openssl11 --installroot=/mnt/cern_root/chroot --releasever=/ \
-    && yum -y groupinstall 'Development Tools' --installroot=/mnt/cern_root/chroot --releasever=/
 
-RUN ln -s /mnt/cern_root/chroot/usr/lib64/libtinfo.so.6  /mnt/cern_root/chroot/usr/lib64/libtinfo.so.5 
-RUN  yum install -y git tar gzip  && mkdir /root_src
-
-RUN  mkdir /opt/cmake && cd /tmp && \
+RUN ln -s ${CHROOT}/usr/lib64/libtinfo.so.6 ${CHROOT}/usr/lib64/libtinfo.so.5 
+RUN yum install -y git tar gzip && mkdir /root_src
+ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH
+RUN mkdir /opt/cmake && cd /tmp && \
     curl -L https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz -o /opt/cmake/cmake.tar.gz && \
     cd /opt/cmake && \
-    tar xf cmake.tar.gz && export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" && \
+    tar xf cmake.tar.gz && \
     ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake && \
     cmake --version
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
-RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
-    && mkdir -p /mnt/cern_root/root_install && mkdir -p  /mnt/cern_root/root && cd  /mnt/cern_root/root \
+RUN export PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH \
+    && mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
     && cmake \
     -Dbuiltin_tbb=ON \
     -Dminimal=ON \
@@ -49,7 +50,7 @@ RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     -Dpythia8=OFF \
     -Droofit=OFF \
     -Droot7=OFF \
-    -Druntime_cxxmodules=OFF \
+    -Druntime_cxxmodules=ON \
     -Dshared=OFF \
     -Dspectrum=OFF \
     -Dsqlite=OFF \
@@ -69,7 +70,7 @@ RUN export PATH="/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH" \
     # -DCMAKE_Fortran_COMPILER=/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_INSTALL_PREFIX=/mnt/cern_root/root_install \
-    -DCMAKE_BUILD_TYPE=Release  /root_src \
+    -DCMAKE_BUILD_TYPE=Release /root_src \
     && cmake --build . -- install -j1 \
     && for dir in tutorials README cmake js icons LICENSE man geom fonts emacs interpreter; do \
         rm -rf ${roothome}/${dir}; \
