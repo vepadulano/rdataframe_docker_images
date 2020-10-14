@@ -8,7 +8,12 @@ RUN python3 -m pip install -r ${roothome}/PyRDF/requirements.txt
 #     libXft libXft-devel libXpm-devel libXext-devel ncurses-libs tbb tbb-devel \
 #     git --installroot=/mnt/cern_root/chroot --releasever=/
 
-RUN rm -rf /root_src && rm -rf /mnt/cern_root/root && rm -rf /mnt/cern_root/chroot/var/cache && rm -rf /mnt/cern_root/chroot/var/lib/yum
+RUN rm -rf /root_src && \
+rm -rf /mnt/cern_root/root && \
+rm -rf /mnt/cern_root/chroot/var/cache && \
+rm -rf /mnt/cern_root/chroot/var/lib/yum && \
+rm -rf /mnt/cern_root/chroot/usr/lib64/python2.7 && \
+rm -rf /mnt/cern_root/chroot/usr/share
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
 
