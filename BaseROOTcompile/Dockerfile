@@ -7,10 +7,11 @@ ENV LD_LIBRARY_PATH=/mnt/cern_root/chroot/usr/lib64:/mnt/cern_root/chroot/usr/li
 RUN mkdir -p /mnt/cern_root/chroot/etc/ && cp -r /etc/yum /mnt/cern_root/chroot/etc/yum \
     && yum install -y make gcc-c++ gcc binutils \
     # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  python3-devel  \
-    python3 python3-devel openssl11 --installroot=/mnt/cern_root/chroot --releasever=/
+    python3 python3-devel openssl11 --installroot=/mnt/cern_root/chroot --releasever=/ \
+    && yum -y groupinstall 'Development Tools' --installroot=/mnt/cern_root/chroot --releasever=/
 
 RUN ln -s /mnt/cern_root/chroot/usr/lib64/libtinfo.so.6  /mnt/cern_root/chroot/usr/lib64/libtinfo.so.5 
-RUN  yum install -y git tar gzip && yum -y groupinstall 'Development Tools' && mkdir /root_src
+RUN  yum install -y git tar gzip  && mkdir /root_src
 
 RUN  mkdir /opt/cmake && cd /tmp && \
     curl -L https://github.com/Kitware/CMake/releases/download/v3.18.3/cmake-3.18.3-Linux-x86_64.tar.gz -o /opt/cmake/cmake.tar.gz && \
