@@ -29,8 +29,8 @@ node() {
                             // sh 'cd /terraform && terraform init &&  terraform apply -auto-approve && terraform destroy -auto-approve'
                             sh """
                             mkdir -p /mnt/AWS_ROOT
-                            cd /mnt/AWS_ROOT 
-                            zip -r aws_root.zip /cern_root/chroot /cern_root/root_install
+                            cd /mnt/cern_root
+                            zip -r /mnt/AWS_ROOT/aws_root.zip chroot root_install
                             """
                         }
                     }
