@@ -8,6 +8,7 @@ ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib:/usr/lib64:/usr/lib:$L
 RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum && \
     yum install -y make gcc-c++ gcc binutils \
     python3 python3-devel openssl11 --installroot=${CHROOT} --releasever=/ && \
+    yum groupinstall -y 'Development Tools' --installroot=${CHROOT} --releasever=/ && \
     ln -s ${CHROOT}/usr/lib64/libtinfo.so.6 ${CHROOT}/usr/lib64/libtinfo.so.5 
     # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  python3-devel  \
 
