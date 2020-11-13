@@ -26,7 +26,7 @@ ENV PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${C
 ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib
 
 RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
-    && /usr/local/bin/cmake \
+    && /opt/cmake/bin/cmake \
     -Dbuiltin_tbb=ON \
     -Dminimal=ON \
     -Dasimage=OFF \
