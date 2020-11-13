@@ -13,8 +13,8 @@ rm -rf /mnt/cern_root/root && \
 rm -rf /mnt/cern_root/chroot/var/cache && \
 rm -rf /mnt/cern_root/chroot/var/lib/yum && \
 rm -rf /mnt/cern_root/chroot/usr/lib64/python2.7 && \
-rm -rf /mnt/cern_root/chroot/usr/share/docs && \
-rm -rf /mnt/cern_root/chroot/usr/src
+rm -rf /mnt/cern_root/chroot/usr/share/doc 
+# rm -rf /mnt/cern_root/chroot/usr/src
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
 
