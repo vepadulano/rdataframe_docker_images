@@ -22,12 +22,16 @@ RUN mkdir /opt/cmake && cd /tmp && \
     cmake --version
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
+ENV PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin:$PATH
+ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
+
 RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
-    && cmake \
+    && /usr/local/bin/cmake \
     -Dbuiltin_tbb=ON \
     -Dminimal=ON \
     -Dasimage=OFF \
     -Dclad=OFF \
+    -Dcocoa=OFF \
     -Dcudnn=OFF \
     -Ddataframe=ON \
     -Ddavix=OFF \
@@ -64,9 +68,9 @@ RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
     -Dxrootd=OFF \
-    # -DCMAKE_C_COMPILER=/usr/bin/gcc \
-    # -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
-    # -DCMAKE_Fortran_COMPILER=/usr/bin/gfortran \
+    -DCMAKE_C_COMPILER=${CHROOT}/usr/bin/gcc \
+    -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/g++ \
+    -DCMAKE_Fortran_COMPILER=${CHROOT}/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_INSTALL_PREFIX=/mnt/cern_root/root_install \
     -DCMAKE_BUILD_TYPE=Release /root_src \
