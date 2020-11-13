@@ -8,6 +8,9 @@ RUN python3 -m pip install -r ${roothome}/PyRDF/requirements.txt
 #     libXft libXft-devel libXpm-devel libXext-devel ncurses-libs tbb tbb-devel \
 #     git --installroot=/mnt/cern_root/chroot --releasever=/
 
+RUN yum -y install patchelf
+RUN find /mnt/cern_root/ -executable -type f -exec patchelf --set-interpreter /mnt/cern_root/chroot/usr/lib64/ld-linux-x86-64.so.2 {} \;
+
 RUN rm -rf /root_src && \
 rm -rf /mnt/cern_root/root && \
 rm -rf /mnt/cern_root/chroot/var/cache && \
@@ -21,8 +24,6 @@ find /mnt/cern_root/ | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 RUN whereis ld
 # rm -rf /mnt/cern_root/chroot/usr/src
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
-RUN find /mnt/cern_root/ -name "ld-linux-x86-64.so.2" && yum -y install patchelf
-# RUN find /mnt/cern_root/ -executable -type f -exec patchelf --set-interpreter /mnt/cern_root/chroot/my-ld-linux.so.2 {} \;
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
 
 # #INSTALL TERRAFORM
