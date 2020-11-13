@@ -21,6 +21,7 @@ find /mnt/cern_root/ | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 RUN whereis ld
 # rm -rf /mnt/cern_root/chroot/usr/src
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
+RUN rm -rf /lib64 && rm -rf /lib && rm -rf /usr/lib && rm -rf /usr/lib64
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
 
 # #INSTALL TERRAFORM
