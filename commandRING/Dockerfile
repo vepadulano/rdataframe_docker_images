@@ -8,7 +8,8 @@ RUN python3 -m pip install -r ${roothome}/PyRDF/requirements.txt
 #     libXft libXft-devel libXpm-devel libXext-devel ncurses-libs tbb tbb-devel \
 #     git --installroot=/mnt/cern_root/chroot --releasever=/
 
-RUN env PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin:/bin:/usr/bin/usr/sbin yum -y install patchelf
+ENV PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin:/bin:/usr/bin/usr/sbin
+RUN yum install epel-release && yum update && yum -y install patchelf
 RUN find /mnt/cern_root/ -executable -type f -exec patchelf --set-interpreter /mnt/cern_root/chroot/usr/lib64/ld-linux-x86-64.so.2 {} \;
 
 RUN rm -rf /root_src && \
