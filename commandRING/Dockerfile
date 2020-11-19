@@ -8,9 +8,9 @@ RUN python3 -m pip install -r ${roothome}/PyRDF/requirements.txt
 #     libXft libXft-devel libXpm-devel libXext-devel ncurses-libs tbb tbb-devel \
 #     git --installroot=/mnt/cern_root/chroot --releasever=/
 
-ENV PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin:/bin:/usr/bin/usr/sbin
-RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum -y update && yum -y install patchelf
-RUN find /mnt/cern_root/ -executable -type f -exec patchelf --set-interpreter /mnt/cern_root/chroot/usr/lib64/ld-linux-x86-64.so.2 {} \;
+# ENV PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin:/bin:/usr/bin/usr/sbin
+# RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum -y update && yum -y install patchelf
+# RUN find /mnt/cern_root/ -executable -type f -exec patchelf --set-interpreter /mnt/cern_root/chroot/usr/lib64/ld-linux-x86-64.so.2 {} \;
 
 RUN rm -rf /root_src && \
 rm -rf /mnt/cern_root/root && \
@@ -22,8 +22,6 @@ rm -rf /mnt/cern_root/chroot/usr/libexec/git-core && \
 rm -rf /mnt/cern_root/chroot/usr/src && \
 find /mnt/cern_root/ | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
-RUN whereis ld
-# rm -rf /mnt/cern_root/chroot/usr/src
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py
 RUN . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
 
