@@ -22,9 +22,6 @@ RUN mkdir /opt/cmake && cd /tmp && \
     cmake --version
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
-ENV PATH=${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin
-ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:$PATH
-ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib
 
 RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
     && cmake \
@@ -74,8 +71,9 @@ RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /
     # -DCMAKE_Fortran_COMPILER=${CHROOT}/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_INSTALL_PREFIX=/mnt/cern_root/root_install \
-    -DCMAKE_BUILD_TYPE=Release /root_src \
-    && cmake --build . -- install -j1
+    -DCMAKE_BUILD_TYPE=Release /root_src
+
+RUN cmake --build . -- install -j1
     
 RUN for dir in tutorials README js icons LICENSE man geom fonts emacs; do \
         rm -rf /mnt/cern_root/root_install/${dir}; \
