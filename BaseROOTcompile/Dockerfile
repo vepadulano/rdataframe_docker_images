@@ -8,7 +8,7 @@ ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib:/usr/lib64:/usr/lib:$L
 RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum && \
     yum install -y make gcc-c++ gcc binutils \
     python3 python3-devel openssl11 --installroot=${CHROOT} --releasever=/ && \
-    yum groupinstall -y 'Development Tools' --installroot=${CHROOT} --releasever=/ && \
+    # yum groupinstall -y 'Development Tools' --installroot=${CHROOT} --releasever=/ && \
     ln -s ${CHROOT}/usr/lib64/libtinfo.so.6 ${CHROOT}/usr/lib64/libtinfo.so.5 
     # libXft libXft-devel libXpm-devel libXext-devel ncurses-libs  tbb tbb-devel  python3-devel  \
 
@@ -69,9 +69,9 @@ RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
     -Dxrootd=OFF \
-    -DCMAKE_C_COMPILER=${CHROOT}/usr/bin/gcc \
-    -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/g++ \
-    -DCMAKE_Fortran_COMPILER=${CHROOT}/usr/bin/gfortran \
+    # -DCMAKE_C_COMPILER=${CHROOT}/usr/bin/gcc \
+    # -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/g++ \
+    # -DCMAKE_Fortran_COMPILER=${CHROOT}/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_INSTALL_PREFIX=/mnt/cern_root/root_install \
     -DCMAKE_BUILD_TYPE=Release /root_src \
