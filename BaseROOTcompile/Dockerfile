@@ -75,8 +75,9 @@ RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_INSTALL_PREFIX=/mnt/cern_root/root_install \
     -DCMAKE_BUILD_TYPE=Release /root_src \
-    && cmake --build . -- install -j1 \
-    && for dir in tutorials README cmake js icons LICENSE man geom fonts emacs interpreter; do \
+    && cmake --build . -- install -j1
+    
+RUN for dir in tutorials README js icons LICENSE man geom fonts emacs; do \
         rm -rf /mnt/cern_root/root_install/${dir}; \
     done 
 
