@@ -12,7 +12,7 @@ RUN python3 -m pip install -r ${roothome}/PyRDF/requirements.txt
 # RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum -y update && yum -y install patchelf
 # RUN find /mnt/cern_root/ -executable -type f -exec patchelf --set-interpreter /mnt/cern_root/chroot/usr/lib64/ld-linux-x86-64.so.2 {} \;
 
-RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum update && yum search libcxx && yum install -y libcxx libcxx-devel --installroot=${CHROOT} --releasever=/
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum update -y && yum search libcxx && yum install -y libcxx libcxx-devel --installroot=${CHROOT} --releasever=/
 
 RUN rm -rf /root_src && \
 rm -rf /mnt/cern_root/root && \
