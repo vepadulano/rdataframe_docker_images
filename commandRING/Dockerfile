@@ -17,7 +17,7 @@ RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
     # wget http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7 && \
     # yum reinstall -y epel-release --installroot=${CHROOT} --releasever=/ && \
     # rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7 && \
-    yum update -y --installroot=${CHROOT} --releasever=/ && yum install -y --nogpgcheck libcxx libcxx-devel --installroot=${CHROOT} --releasever=/
+    yum update -y --installroot=${CHROOT} --releasever=/ && yum install -y --nogpgcheck glibc glibc-devel libcxx libcxx-devel --installroot=${CHROOT} --releasever=/
 
 RUN rm -rf /root_src && \
 rm -rf /mnt/cern_root/root && \
