@@ -33,7 +33,7 @@ RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /
     -Dcudnn=OFF \
     -Ddataframe=ON \
     -Ddavix=OFF \
-    -Dexceptions=OFF \
+    -Dexceptions=ON \
     -Dfftw3=OFF \
     -Dfitsio=OFF \
     -Dgdml=OFF \
@@ -70,13 +70,14 @@ RUN mkdir -p /mnt/cern_root/root_install && mkdir -p /mnt/cern_root/root && cd /
     # -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/g++ \
     # -DCMAKE_Fortran_COMPILER=${CHROOT}/usr/bin/gfortran \
     -DCMAKE_MAKE_PROGRAM=make \
-    -DCMAKE_INSTALL_PREFIX=/mnt/cern_root/root_install \
-    -DCMAKE_BUILD_TYPE=Release /root_src
+    -DCMAKE_BUILD_TYPE=Debug \
+    -DCMAKE_INSTALL_PREFIX=/mnt/cern_root/root_install  /root_src
+    # -DCMAKE_BUILD_TYPE=Release
 
-RUN cd /mnt/cern_root/root && cmake --build . -- install -j1
+RUN cd /mnt/cern_root/root && cmake --build . --target install -- -j1
     
-RUN for dir in tutorials README js icons LICENSE man geom fonts emacs; do \
-        rm -rf /mnt/cern_root/root_install/${dir}; \
-    done 
+# RUN for dir in tutorials README js icons LICENSE man geom fonts emacs; do \
+#         rm -rf /mnt/cern_root/root_install/${dir}; \
+#     done 
 
 CMD . ${roothome}/bin/thisroot.sh && root -b
