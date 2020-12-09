@@ -60,7 +60,7 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     -Dxft=OFF \
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
-    -Dxrootd=OFF \
+    -Dxrootd=ON \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${roothome} /root_src
