@@ -18,6 +18,7 @@ RUN mkdir /opt/cmake && cd /tmp && \
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
 
+ENV CPATH=${CHROOT}/usr/include:$CPATH
 RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
     && cmake \
     -Dbuiltin_tbb=ON \
