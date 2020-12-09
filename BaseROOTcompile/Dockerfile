@@ -66,7 +66,7 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${roothome} /root_src
 
-RUN cd /mnt/cern_root/root && cmake --build . --target install -- -j1
+RUN cd /mnt/cern_root/root && cmake --build . --target install -- -j1 || cat  /mnt/cern_root/root/XROOTD-prefix/src/XROOTD-stamp/XROOTD-build-*
     
 RUN for dir in tutorials README js icons LICENSE man geom fonts emacs; do \
         rm -rf ${roothome}/${dir}; \
