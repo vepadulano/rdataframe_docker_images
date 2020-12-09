@@ -3,9 +3,10 @@ ENV roothome=/mnt/cern_root/root_install
 ENV CHROOT=/mnt/cern_root/chroot
 ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin:$PATH
 ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
+ENV CPATH=${CHROOT}/usr/include:$CPATH
 
 RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum && \
-    yum install -y make gcc-c++ gcc binutils python3 python3-devel openssl11 openssl-devel --installroot=${CHROOT} --releasever=/ && \
+    yum install -y make gcc-c++ gcc binutils python3 python3-devel openssl11 openssl11-devel --installroot=${CHROOT} --releasever=/ && \
     ln -s ${CHROOT}/usr/lib64/libtinfo.so.6 ${CHROOT}/usr/lib64/libtinfo.so.5
 
 RUN yum install -y git tar gzip && yum groupinstall -y 'Development Tools' && mkdir /root_src    
@@ -18,7 +19,6 @@ RUN mkdir /opt/cmake && cd /tmp && \
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
 
-ENV CPATH=${CHROOT}/usr/include:$CPATH
 RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
     && cmake \
     -Dbuiltin_tbb=ON \
