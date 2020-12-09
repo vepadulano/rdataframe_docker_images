@@ -5,7 +5,7 @@ ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:${CHROOT}/usr/local/sbin:${CHR
 ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
 
 RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum && \
-    yum install -y make gcc-c++ gcc binutils python3 python3-devel openssl11 --installroot=${CHROOT} --releasever=/ && \
+    yum install -y make gcc-c++ gcc binutils python3 python3-devel openssl11 openssl11-devel --installroot=${CHROOT} --releasever=/ && \
     ln -s ${CHROOT}/usr/lib64/libtinfo.so.6 ${CHROOT}/usr/lib64/libtinfo.so.5
 
 RUN yum install -y git tar gzip && yum groupinstall -y 'Development Tools' && mkdir /root_src    
@@ -60,6 +60,7 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     -Dxft=OFF \
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
+    -Dbuiltin_xrootd=ON \
     -Dxrootd=ON \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_BUILD_TYPE=Release \
