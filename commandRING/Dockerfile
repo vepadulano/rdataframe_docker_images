@@ -22,7 +22,8 @@ RUN rm -rf /root_src && \
 
 # TEST
 RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py && \
-    . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py
+    . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py && \
+    curl https://raw.githubusercontent.com/CloudPyRDF/test_repo/main/test.py > ${roothome}/PyRDF/xrootd.py &&  python3 ${roothome}/PyRDF/xrootd.py
 
 # #INSTALL TERRAFORM
 # RUN curl -L https://releases.hashicorp.com/terraform/0.12.23/terraform_0.12.23_linux_amd64.zip > terraform.zip
