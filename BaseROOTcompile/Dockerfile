@@ -69,7 +69,7 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     -Dxft=OFF \
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
-    -Dxrootd=OFF \
+    -Dxrootd=ON \
     # -DCMAKE_CC_COMPILER=${CHROOT}/usr/bin/clang \
     # -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/clang++ \
     -DCMAKE_MAKE_PROGRAM=make \
