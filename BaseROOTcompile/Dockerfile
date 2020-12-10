@@ -64,7 +64,8 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
     -Dxrootd=ON \
-    -DCMAKE_CXX_COMPILER=`which clang` \
+    -DCMAKE_CC_COMPILER=${CHROOT}/usr/bin/clang \
+    -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/clang++ \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${roothome} /root_src
