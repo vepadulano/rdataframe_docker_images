@@ -20,6 +20,8 @@ RUN mkdir /opt/cmake && cd /tmp && \
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
 RUN yum install -y openssl11 openssl11-devel
 RUN yum install -y clang --installroot=${CHROOT} --releasever=/
+RUN cat /mnt/cern_root/chroot/usr/include/sys/stat.h
+# RUN curl https://github.com/xrootd/xrootd/archive/v5.0.3.tar.gz
 # ENV STD_PATH=$PATH
 # ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin
 RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
