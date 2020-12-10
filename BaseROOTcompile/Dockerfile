@@ -21,8 +21,8 @@ RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git
 RUN yum install -y openssl11 openssl11-devel
 # RUN yum install -y clang --installroot=${CHROOT} --releasever=/
 # RUN cat /mnt/cern_root/chroot/usr/include/sys/stat.h
-RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum install -y xrootd xrootd-server xrootd-client xrootd-client-devel xrootd-python -installroot=${CHROOT} --releasever=/
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --installroot=${CHROOT} --releasever=/ && \
+    yum install -y xrootd xrootd-server xrootd-client xrootd-client-devel xrootd-python --installroot=${CHROOT} --releasever=/
 
 # RUN curl https://github.com/xrootd/xrootd/archive/v5.0.3.tar.gz
 # ENV STD_PATH=$PATH
