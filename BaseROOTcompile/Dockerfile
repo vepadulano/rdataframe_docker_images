@@ -18,6 +18,7 @@ RUN mkdir /opt/cmake && cd /tmp && \
     cmake --version
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
+RUN yum install -y openssl11 openssl11-devel
 
 RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/root \
     && cmake \
