@@ -19,8 +19,11 @@ RUN mkdir /opt/cmake && cd /tmp && \
 
 RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git  /root_src 
 RUN yum install -y openssl11 openssl11-devel
-RUN yum install -y clang --installroot=${CHROOT} --releasever=/
-RUN cat /mnt/cern_root/chroot/usr/include/sys/stat.h
+# RUN yum install -y clang --installroot=${CHROOT} --releasever=/
+# RUN cat /mnt/cern_root/chroot/usr/include/sys/stat.h
+RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN yum install -y xrootd xrootd-server xrootd-client xrootd-client-devel xrootd-python -installroot=${CHROOT} --releasever=/
+
 # RUN curl https://github.com/xrootd/xrootd/archive/v5.0.3.tar.gz
 # ENV STD_PATH=$PATH
 # ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin
@@ -66,9 +69,9 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     -Dxft=OFF \
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
-    -Dxrootd=ON \
-    -DCMAKE_CC_COMPILER=${CHROOT}/usr/bin/clang \
-    -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/clang++ \
+    -Dxrootd=OFF \
+    # -DCMAKE_CC_COMPILER=${CHROOT}/usr/bin/clang \
+    # -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/clang++ \
     -DCMAKE_MAKE_PROGRAM=make \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=${roothome} /root_src
