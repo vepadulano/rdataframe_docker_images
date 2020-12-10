@@ -22,7 +22,8 @@ RUN yum install -y openssl11 openssl11-devel
 # RUN cat /mnt/cern_root/chroot/usr/include/sys/stat.h
 RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --installroot=${CHROOT} --releasever=/ && \
     yum install -y --nogpgcheck xrootd xrootd-client xrootd-client-devel xrootd-python --installroot=${CHROOT} --releasever=/
-
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  && \
+    yum install -y --nogpgcheck xrootd xrootd-client xrootd-client-devel xrootd-python
 ENV CPATH=${CHROOT}/usr/include:/usr/include/xrootd:$CPATH
     
 # RUN curl https://github.com/xrootd/xrootd/archive/v5.0.3.tar.gz
