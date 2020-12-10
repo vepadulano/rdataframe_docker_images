@@ -3,7 +3,6 @@ ENV roothome=/mnt/cern_root/root_install
 ENV CHROOT=/mnt/cern_root/chroot
 ENV PATH=/opt/cmake/cmake-3.18.3-Linux-x86_64/bin:${CHROOT}/usr/local/sbin:${CHROOT}/usr/local/bin:${CHROOT}/usr/sbin:${CHROOT}/usr/bin:${CHROOT}/sbin:${CHROOT}/bin:$PATH
 ENV LD_LIBRARY_PATH=${CHROOT}/usr/lib64:${CHROOT}/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
-ENV CPATH=${CHROOT}/usr/include:$CPATH
 
 RUN mkdir -p ${CHROOT}/etc/ && cp -r /etc/yum ${CHROOT}/etc/yum && \
     yum install -y make gcc-c++ gcc binutils python3 python3-devel openssl11 openssl11-devel --installroot=${CHROOT} --releasever=/ && \
@@ -24,8 +23,7 @@ RUN yum install -y openssl11 openssl11-devel
 RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --installroot=${CHROOT} --releasever=/ && \
     yum install -y --nogpgcheck xrootd xrootd-client xrootd-client-devel xrootd-python --installroot=${CHROOT} --releasever=/
 
-RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-    yum install -y --nogpgcheck xrootd xrootd-client xrootd-client-devel xrootd-python
+ENV CPATH=${CHROOT}/usr/include:/usr/include/xrootd:$CPATH
     
 # RUN curl https://github.com/xrootd/xrootd/archive/v5.0.3.tar.gz
 # ENV STD_PATH=$PATH
@@ -73,6 +71,7 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
     -Dxrootd=ON \
+    -DXROOTD_ROOT_DIR=${CHROOT}/opt/xrootd \
     # -DCMAKE_CC_COMPILER=${CHROOT}/usr/bin/clang \
     # -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/clang++ \
     -DCMAKE_MAKE_PROGRAM=make \
