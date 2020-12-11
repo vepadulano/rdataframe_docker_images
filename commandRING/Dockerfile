@@ -9,12 +9,6 @@ RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
     yum update -y --installroot=${CHROOT} --releasever=/ && \
     yum install -y --nogpgcheck glibc glibc-devel libcxx libcxx-devel --installroot=${CHROOT} --releasever=/
 
-
-
-# TEST
-RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py && \
-    . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py && \
-    curl https://raw.githubusercontent.com/CloudPyRDF/test_repo/main/test.py > ${roothome}/PyRDF/xrootd.py &&  python3 ${roothome}/PyRDF/xrootd.py
 # Cleanup not needed
 RUN rm -rf /root_src && \
     rm -rf /mnt/cern_root/root && \
@@ -25,6 +19,12 @@ RUN rm -rf /root_src && \
     rm -rf /mnt/cern_root/chroot/usr/libexec/git-core && \
     rm -rf /mnt/cern_root/chroot/usr/src && \
     find /mnt/cern_root/ | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+
+# TEST
+RUN curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py && \
+    . ${roothome}/bin/thisroot.sh && python3 ${roothome}/PyRDF/introduction.py && \
+    curl https://raw.githubusercontent.com/CloudPyRDF/test_repo/main/test.py > ${roothome}/PyRDF/xrootd.py &&  python3 ${roothome}/PyRDF/xrootd.py
+
 # #INSTALL TERRAFORM
 # RUN curl -L https://releases.hashicorp.com/terraform/0.12.23/terraform_0.12.23_linux_amd64.zip > terraform.zip
 # RUN yum install -y unzip && unzip terraform.zip -d /usr/bin/

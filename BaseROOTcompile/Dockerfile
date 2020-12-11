@@ -83,7 +83,7 @@ RUN cd /mnt/cern_root/root && cmake --build . --target install -- -j1
 # echo "EHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH" && cat  /mnt/cern_root/root/XROOTD-prefix/src/XROOTD-stamp/XROOTD-configure-* && \
 # echo "EHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH" && cat  /mnt/cern_root/root/XROOTD-prefix/src/XROOTD-stamp/XROOTD-build-* && exit -1
     
-RUN for dir in tutorials README js icons LICENSE man geom fonts emacs; do \
+RUN for dir in tutorials README js icons LICENSE man geom emacs; do \
         rm -rf ${roothome}/${dir}; \
     done 
 
