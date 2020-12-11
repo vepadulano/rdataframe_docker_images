@@ -20,11 +20,11 @@ RUN git clone --branch v6-22-00-patches https://github.com/root-project/root.git
 RUN yum install -y openssl11 openssl11-devel
 # RUN yum install -y clang --installroot=${CHROOT} --releasever=/
 # RUN cat /mnt/cern_root/chroot/usr/include/sys/stat.h
-RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --installroot=${CHROOT} --releasever=/ && \
-    yum install -y --nogpgcheck xrootd xrootd-client xrootd-client-devel xrootd-python xrootd-client-libs xrootd-libs xrootd-compat-client-libs --installroot=${CHROOT} --releasever=/
-RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  && \
-    yum install -y --nogpgcheck xrootd xrootd-client xrootd-client-devel xrootd-python xrootd-client-libs xrootd-libs xrootd-compat-client-libs
-ENV CPATH=${CHROOT}/usr/include:/usr/include/xrootd:$CPATH
+# RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --installroot=${CHROOT} --releasever=/ && \
+#     yum install -y --nogpgcheck xrootd xrootd-client xrootd-client-devel xrootd-python xrootd-client-libs xrootd-libs xrootd-compat-client-libs --installroot=${CHROOT} --releasever=/
+# RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  && \
+#     yum install -y --nogpgcheck xrootd xrootd-client xrootd-client-devel xrootd-python xrootd-client-libs xrootd-libs xrootd-compat-client-libs
+# ENV CPATH=${CHROOT}/usr/include:/usr/include/xrootd:$CPATH
     
 # RUN curl https://github.com/xrootd/xrootd/archive/v5.0.3.tar.gz
 # ENV STD_PATH=$PATH
@@ -71,8 +71,8 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     -Dxft=OFF \
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
-    -Dxrootd=ON \
-    -DXROOTD_ROOT_DIR=${CHROOT}/opt/xrootd \
+    -Dbuiltin_xrootd=ON \
+    # -DXROOTD_ROOT_DIR=${CHROOT}/opt/xrootd \
     # -DCMAKE_CC_COMPILER=${CHROOT}/usr/bin/clang \
     # -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/clang++ \
     -DCMAKE_MAKE_PROGRAM=make \
