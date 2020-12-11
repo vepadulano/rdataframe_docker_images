@@ -76,7 +76,7 @@ RUN mkdir -p ${roothome} && mkdir -p /mnt/cern_root/root && cd /mnt/cern_root/ro
     # -DCMAKE_CC_COMPILER=${CHROOT}/usr/bin/clang \
     # -DCMAKE_CXX_COMPILER=${CHROOT}/usr/bin/clang++ \
     -DCMAKE_MAKE_PROGRAM=make \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_BUILD_TYPE=Debug \
     -DCMAKE_INSTALL_PREFIX=${roothome} /root_src
 
 RUN cd /mnt/cern_root/root && cmake --build . --target install -- -j1 || \
