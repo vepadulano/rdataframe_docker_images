@@ -8,21 +8,21 @@ node() {
                 git 'http://localhost:3000/Vetch/RunWIthSecond'
             }
         }
-        stage("Build base"){
+        stage("Build and compile base"){
             script{
                 docker.build("root_utils", "--network='host' BaseROOTcompile")
             }
         }
 
-        stage("build images"){
+        stage("Build images"){
             parallel(
                 "command": {
-                    stage("Build command centre") {
+                    stage("Build PyRDF") {
                         script{
                             pyrdf_docker = docker.build("pyrdf_terraform", "--network='host' commandRING")
                         }
                     }
-                    stage("Run image") {
+                    stage("Pack image to CERNBox") {
                         pyrdf_docker.inside("--network='host' -v /var/run/docker.sock:/var/run/docker.sock -v /mnt/dav:/mnt/dav")
                         {
                             // sh '. /cern_root/root/bin/thisroot.sh && python2 /cern_root/root/PyRDF/introduction.py'

@@ -2,7 +2,8 @@ FROM root_utils:latest
 
 # DOWNLOAD PYRDF AND DEPENDENCIES
 RUN git clone https://github.com/JavierCVilla/PyRDF ${roothome}/PyRDF && \
-    python3 -m pip install -r ${roothome}/PyRDF/requirements.txt  
+    python3 -m pip install -r ${roothome}/PyRDF/requirements.txt  && \
+    python3 -m pip install numpy cloudpickle --target=${roothome}
 
 # Install libc++
 RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm --installroot=${CHROOT} --releasever=/ && \
