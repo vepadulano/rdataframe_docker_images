@@ -25,7 +25,7 @@ RUN rm -rf /root_src && \
 ENV FUNCTION_DIR /mnt/cern_root/root_install/PyRDF
 RUN python3 -m pip install awslambdaric boto3 cloudpickle numpy --target ${FUNCTION_DIR}
 RUN chmod -R 777 /mnt/cern_root/root_install
-RUN curl https://raw.githubusercontent.com/CloudPyRDF/ROOTLambda/Docker/lambda.py > ${FUNCTION_DIR}/lambda.py && chmod 775 ${FUNCTION_DIR}/lambda.py
+RUN curl https://raw.githubusercontent.com/CloudPyRDF/ROOTLambda/Docker/lambda.py > ${FUNCTION_DIR}/lambda.py && chmod 755 ${FUNCTION_DIR}/lambda.py
 
 # TEST
 # RUN  . ${roothome}/bin/thisroot.sh && \
