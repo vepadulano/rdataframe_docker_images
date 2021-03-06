@@ -21,6 +21,12 @@ RUN rm -rf /root_src && \
     rm -rf /mnt/cern_root/chroot/usr/src && \
     find /mnt/cern_root/ | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
 
+
+ENV FUNCTION_DIR /mnt/cern_root/root_install/PyRDF
+RUN curl https://raw.githubusercontent.com/CloudPyRDF/ROOTLambda/Docker/lambda.py > ${FUNCTION_DIR}/lambda.py
+RUN python3 -m pip install awslambdaric --target ${FUNCTION_DIR}
+RUN . ${roothome}/bin/thisroot.sh
+
 # TEST
 # RUN  . ${roothome}/bin/thisroot.sh && \
 #     # curl https://raw.githubusercontent.com/JavierCVilla/PyRDF/master/tutorials/local/sequential/df001_introduction.py > ${roothome}/PyRDF/introduction.py && \
