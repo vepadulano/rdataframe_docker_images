@@ -24,7 +24,7 @@ RUN rm -rf /root_src && \
 
 ENV FUNCTION_DIR /mnt/cern_root/root_install/PyRDF
 RUN curl https://raw.githubusercontent.com/CloudPyRDF/ROOTLambda/Docker/lambda.py > ${FUNCTION_DIR}/lambda.py
-RUN python3 -m pip install awslambdaric --target ${FUNCTION_DIR}
+RUN python3 -m pip install awslambdaric boto3 --target ${FUNCTION_DIR}
 RUN . ${roothome}/bin/thisroot.sh
 
 # TEST
