@@ -1,20 +1,65 @@
-FROM amazonlinux:2
-ENV roothome=/cern_root/root
-ENV PATH=/cern_root/chroot/usr/local/sbin:/cern_root/chroot/usr/local/bin:/cern_root/chroot/usr/sbin:/cern_root/chroot/usr/bin:/cern_root/chroot/sbin:/cern_root/chroot/bin:$PATH
-ENV LD_LIBRARY_PATH=/cern_root/chroot/usr/lib64:/cern_root/chroot/usr/lib:/usr/lib64:/usr/lib:$LD_LIBRARY_PATH
-RUN python -c 'import yum, json; yb = yum.YumBase(); print json.dumps(yb.conf.yumvar, indent=2)'
-RUN find /etc/yum/vars -type f -print -exec cat {} \;
-RUN curl -L https://root.cern/download/root_v6.22.02.Linux-centos7-x86_64-gcc4.8.tar.gz -o rootbin.tar.gz
-RUN mkdir -p /cern_root/chroot/etc/ && cp -r /etc/yum /cern_root/chroot/etc/yum \
-    && yum install -y tar gzip libXft-devel make cmake gcc-c++ gcc \
-    binutils libXft libXft-devel libXpm-devel libXext-devel python3 python3-devel libzstd ncurses-libs tbb tbb-devel \
-    openssl11 --installroot=/cern_root/chroot --releasever=/ \
-    && tar xvf rootbin.tar.gz -C /cern_root > /dev/null
+FROM ubuntu:20.04
 
-RUN for dir in tutorials README cmake js icons LICENSE man geom fonts emacs; do \
-        rm -rf ${roothome}/${dir}; \
-    done \
-    && ls -la $roothome \
-    && ln -s /cern_root/chroot/usr/lib64/libtinfo.so.6  /cern_root/chroot/usr/lib64/libtinfo.so.5 
+# ROOT deps
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive TZ=Asia/Singapore apt-get -y -q install \
+    dpkg-dev cmake g++ gcc binutils libx11-dev libxpm-dev \
+    libxft-dev libxext-dev libssl-dev gfortran libpcre3-dev \
+    xlibmesa-glu-dev libglew1.5-dev libftgl-dev \
+    libmysqlclient-dev libfftw3-dev libcfitsio-dev \
+    graphviz-dev libavahi-compat-libdnssd-dev \
+    libldap2-dev libxml2-dev libkrb5-dev \
+    libgsl0-dev git python3 python3-pip
 
-CMD . ${roothome}/bin/thisroot.sh && root
+# Python deps
+RUN pip install numpy dask distributed
+
+# ROOT
+RUN git clone --branch AWS https://github.com/CloudPyRDF/root.git root_src
+RUN mkdir root_build
+RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local -Dgnuinstall=ON \
+    -Dbuiltin_tbb=ON \
+    -Dminimal=ON \
+    -Dasimage=OFF \
+    -Dclad=OFF \
+    -Dcocoa=OFF \
+    -Dcudnn=OFF \
+    -Ddataframe=ON \
+    -Ddavix=OFF \
+    -Dexceptions=OFF \
+    -Dfftw3=OFF \
+    -Dfitsio=OFF \
+    -Dgdml=OFF \
+    -Dgfal=OFF \
+    -Dhttp=OFF \
+    -Dimt=OFF \
+    -Dmathmore=OFF \
+    -Dmlp=OFF \
+    -Dmysql=OFF \
+    -Dopengl=OFF \
+    -Doracle=OFF \
+    -Dpgsql=OFF \
+    -Dpyroot=ON \
+    -Dpythia6=OFF \
+    -Dpythia8=OFF \
+    -Droofit=OFF \
+    -Droot7=OFF \
+    -Druntime_cxxmodules=ON \
+    -Dshared=OFF \
+    -Dspectrum=OFF \
+    -Dsqlite=OFF \
+    -Dssl=OFF \
+    -Dtmva=OFF \
+    -Dtmva-cpu=OFF \
+    -Dtmva-pymva=OFF \
+    -Dvdt=OFF \
+    -Dwebgui=OFF \
+    -Dx11=OFF \
+    -Dxft=OFF \
+    -Dbuiltin_freetype=OFF \
+    -Dxml=OFF \
+    -Dxrootd=OFF \
+    -B root_build -S root_src
+RUN cmake --build root_build -- install -j$(nproc)
+
+ENV PYTHONPATH /usr/local/lib/root/
