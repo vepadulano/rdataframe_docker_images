@@ -58,7 +58,7 @@ RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local -Dgnuinstall=ON \
     -Dxft=OFF \
     -Dbuiltin_freetype=OFF \
     -Dxml=OFF \
-    -Dxrootd=OFF \
+    -Dxrootd=ON \
     -B root_build -S root_src
 RUN cmake --build root_build -- install -j$(nproc)
 
