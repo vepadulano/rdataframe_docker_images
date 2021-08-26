@@ -15,7 +15,7 @@ RUN apt-get update && \
 RUN pip install numpy dask distributed
 
 # ROOT
-RUN git clone --branch AWS https://github.com/CloudPyRDF/root.git root_src
+RUN git clone --branch v6-24-00-patches https://github.com/root/root.git root_src
 RUN mkdir root_build
 RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local -Dgnuinstall=ON \
     -Dbuiltin_tbb=ON \
