@@ -18,8 +18,6 @@ RUN pip install numpy dask distributed
 RUN git clone --branch v6-24-00-patches https://github.com/root-project/root.git root_src
 RUN mkdir root_build
 RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local -Dgnuinstall=ON \
-    -Dbuiltin_tbb=ON \
-    -Dminimal=ON \
     -Dasimage=OFF \
     -Dclad=OFF \
     -Dcocoa=OFF \
@@ -44,7 +42,6 @@ RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local -Dgnuinstall=ON \
     -Dpythia8=OFF \
     -Droofit=OFF \
     -Droot7=OFF \
-    -Druntime_cxxmodules=ON \
     -Dshared=OFF \
     -Dspectrum=OFF \
     -Dsqlite=OFF \
@@ -61,6 +58,6 @@ RUN cmake -DCMAKE_INSTALL_PREFIX=/usr/local -Dgnuinstall=ON \
     -Dxrootd=ON \
     -Dbuiltin_xrootd=ON \
     -B root_build -S root_src
-RUN cmake --build root_build -- install -j$(nproc)
+RUN cmake --build root_build -- install -j1
 
 ENV PYTHONPATH /usr/local/lib/root/
