@@ -4,102 +4,41 @@ FROM root_base:latest
 # RUN rm -rf /root_build 
 # RUN rm -rf /root_src
 
-ENV FUNCTION_DIR=/usr/local
+WORKDIR /usr/local
 ENV EXPERIMENTAL_PATH=bindings/experimental/distrdf/python/DistRDF/Backends/AWS
-ENV DISTRDF_PATH=lib/root/DistRDF
+ENV TARGET_PATH=lib/root/DistRDF/Backends
+ENV BRANCH=AWS-dev
 
-ENV TARGET_PATH=${FUNCTION_DIR}/${DISTRDF_PATH}/Backends
-RUN echo ${TARGET_PATH}
+# Install Dependencies
+RUN apt install curl && pip install --upgrade pip && pip install awslambdaric boto3 cloudpickle numpy
+
+# BEGIN only for client
+RUN pip install jupyter
+# END
+
+# configure AWS patch for client side
 RUN mkdir -p ${TARGET_PATH}/AWS
 
-RUN apt install curl
-RUN ls /usr/local/lib/root/DistRDF/Backends
+# Get Lambda into correct position
+RUN curl https://raw.githubusercontent.com/wlloyduw/SAAF/master/python_template/src/Inspector.py > Inspector.py && chmod 767 Inspector.py \
+&& curl https://raw.githubusercontent.com/CloudPyRDF/rdataframe_awslambda_worker/root-6-24-lambda/lambda.py > lambda.py && chmod 777 lambda.py
 
-RUN pip install awslambdaric boto3 cloudpickle numpy --target ${FUNCTION_DIR}
-RUN pip install jupyter
+### END OF LAMBDA SIDE ###
 
-RUN curl https://raw.githubusercontent.com/CloudPyRDF/root/AWS/${EXPERIMENTAL_PATH}/__init__.py \
+RUN curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/Backend.py \
+> ${TARGET_PATH}/AWS/Backend.py \
+&& curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/flushing_logger.py \
+> ${TARGET_PATH}/AWS/flushing_logger.py \
+&& curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/AWS_utils.py \
+> ${TARGET_PATH}/AWS/AWS_utils.py \
+&& curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/reducer.py \
+> ${TARGET_PATH}/AWS/reducer.py \
+&& curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/__init__.py \
 > ${TARGET_PATH}/AWS/__init__.py 
-RUN curl https://raw.githubusercontent.com/CloudPyRDF/root/AWS/${EXPERIMENTAL_PATH}/Backend.py \
-> ${TARGET_PATH}/AWS/Backend.py 
 
-# RUN curl https://raw.githubusercontent.com/CloudPyRDF/rdataframe_awslambda_worker/Docker/lambda.py > ${FUNCTION_DIR}/lambda.py && chmod 765 ${FUNCTION_DIR}/lambda.py
-
-RUN <<EOF cat >> ${FUNCTION_DIR}/lambda.py && chmod 765 ${FUNCTION_DIR}/lambda.py
-import base64
-import json
-import os
-import time
-import cloudpickle as pickle
-from ast import literal_eval
-
-import boto3
-import ROOT
-
-bucket = os.environ.get('bucket')
-
-def lambda_handler(event, context):
-    print('event', event)
-    s3 = boto3.client('s3')
-
-    start = int(event['start'])
-    end = int(event['end'])
-    filelist= literal_eval(event['filelist'])
-    friend_info= None
-    
-    if event.get('friend_info'):
-        friend_info = pickle.loads(
-            base64.b64decode(event['friend_info'][2:-1])
-        )
-
-    range = base64.b64decode(event['range'][2:-1])
-    mapper = base64.b64decode(event['script'][2:-1])
-
-    mapper=pickle.loads(mapper)
-    range=pickle.loads(range)
-
-    # range.start=start
-    # range.end=end
-    # range.filelist=filelist
-    # print("before friend")
-    # if friend_info is not None:
-    #     print(friend_info)
-    #     print(friend_info.friend_names)
-    #     print(friend_info.friend_file_names)
-
-    # range.friend_info=friend_info
-    # print("after friend")
-
-    try:
-        hist=mapper(range)
-    except Exception as e:
-        return {
-            'statusCode': 500,
-            'errorType': json.dumps(type(e).__name__),
-            'errorMessage': json.dumps(str(e)),
-        }
-
-    print("after map")
-
-    # f = ROOT.TFile('/tmp/out.root', 'RECREATE')
-    # for h in hist:
-    #     h.GetValue().Write()
-    # f.Close()
-    with open('/tmp/out.pickle', 'wb') as handle:
-        pickle.dump(hist, handle)
-
-    filename=f'partial_{str(start)}_{str(end)}_{str(int(time.time()*1000.0))}.pickle'
-
-    s3.upload_file(f'/tmp/out.pickle', bucket, filename)
-
-    return {
-        'statusCode': 200,
-        'body': json.dumps(f'Done analyzing, result saved as {filename}')
-    }
-EOF
-
-WORKDIR /usr/local
-RUN curl https://raw.githubusercontent.com/Kamilbur/PyRDFMaster/root-lambda-client/commandRING/client/files/df102_NanoAODDimuonAnalysis.ipynb > analysis.ipynb
+# Get the analysis for client
+# TODO mount this instead of downloading 
+RUN git clone https://gitlab.cern.ch/mpitt/ppstools.git
 CMD  /bin/bash -c "source /usr/local/bin/thisroot.sh && jupyter notebook --allow-root"
 
 # TEST
