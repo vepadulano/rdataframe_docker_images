@@ -25,16 +25,7 @@ RUN curl https://raw.githubusercontent.com/wlloyduw/SAAF/master/python_template/
 
 ### END OF LAMBDA SIDE ###
 
-RUN curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/Backend.py \
-> ${TARGET_PATH}/AWS/Backend.py \
-&& curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/flushing_logger.py \
-> ${TARGET_PATH}/AWS/flushing_logger.py \
-&& curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/AWS_utils.py \
-> ${TARGET_PATH}/AWS/AWS_utils.py \
-&& curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/reducer.py \
-> ${TARGET_PATH}/AWS/reducer.py \
-&& curl https://raw.githubusercontent.com/CloudPyRDF/root/${BRANCH}/${EXPERIMENTAL_PATH}/__init__.py \
-> ${TARGET_PATH}/AWS/__init__.py 
+COPY root/bindings/experimental/distrdf/python/DistRDF/Backends/AWS ${TARGET_PATH}/AWS
 
 # Get the analysis for client
 # TODO mount this instead of downloading 
